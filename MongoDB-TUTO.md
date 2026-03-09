@@ -30,6 +30,8 @@ Example Document:
 
 ---
 
+
+
 # 2. MongoDB Basic Concepts
 
 ### Database
@@ -69,7 +71,106 @@ Example:
 
 ---
 
-# 3. MongoDB Basic Commands
+# 3. Installing MongoDB with Docker (Recommended)
+
+### Step 1: Install Docker Desktop
+
+Download and install Docker Desktop from [docker.com](https://www.docker.com/products/docker-desktop)
+
+### Step 2: Create docker-compose.yml
+
+Create this file in your project root:
+
+```yaml
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: tourism_mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
+```
+
+### Step 3: Run MongoDB
+
+Start:
+```bash
+docker-compose up -d
+```
+
+Stop:
+```bash
+docker-compose down
+```
+
+Check status:
+```bash
+docker ps
+```
+
+---
+
+# 4. Managing MongoDB - Choose Your Tool
+
+### Option 1: MongoDB Compass (Easiest - Visual Interface)
+
+**Install:** Download from [mongodb.com/products/compass](https://www.mongodb.com/products/compass)
+
+**Connect:** 
+```
+mongodb://admin:password123@localhost:27017
+```
+
+**Use:** Click, browse, and manage your data visually
+
+---
+
+### Option 2: VS Code Extension (Best for Developers)
+
+**Install:** 
+1. Open Extensions in VS Code (Ctrl+Shift+X)
+2. Search "MongoDB for VS Code"
+3. Install
+
+**Connect:**
+1. Click MongoDB icon
+2. Add connection: `mongodb://admin:password123@localhost:27017`
+
+**Use:** Create `.mongodb` playground file and run queries:
+```js
+use('tourismDB');
+db.trips.find();
+```
+
+---
+
+### Option 3: mongosh (CLI - Fast & Scriptable)
+
+**Connect:**
+```bash
+docker exec -it tourism_mongodb mongosh -u admin -p password123
+```
+
+**Use:** Run commands directly:
+```js
+use tourismDB
+db.trips.find()
+```
+
+**Quick Tip:** For this project, use **VS Code Extension** for development and **Compass** for data exploration
+
+---
+
+# 5. MongoDB Basic Commands
 
 ### Database
 
@@ -121,7 +222,7 @@ db.trips.drop()
 
 ---
 
-# 4. CRUD Operations
+# 6. CRUD Operations
 
 CRUD = Create, Read, Update, Delete
 
@@ -223,7 +324,7 @@ db.trips.find({price:{$gt:10000}})
 
 ---
 
-# 5. Update Documents
+# 7. Update Documents
 
 Update one
 
@@ -245,7 +346,7 @@ db.trips.updateMany(
 
 ---
 
-# 6. Delete Documents
+# 8. Delete Documents
 
 Delete one
 
@@ -261,7 +362,7 @@ db.trips.deleteMany({duration:3})
 
 ---
 
-# 7. MongoDB Connection with Node.js
+# 9. MongoDB Connection with Node.js
 
 Install mongoose
 
@@ -281,7 +382,7 @@ mongoose.connect("mongodb://localhost:27017/tourismDB")
 
 ---
 
-# 8. Mongoose Schema and Model
+# 10. Mongoose Schema and Model
 
 Schema defines the structure of documents.
 
@@ -320,7 +421,7 @@ module.exports = Trip;
 
 ---
 
-# 9. CRUD from Node.js
+# 11. CRUD from Node.js
 
 Create document
 
@@ -356,7 +457,7 @@ await Trip.deleteOne({_id:id})
 
 ---
 
-# 10. Pagination (Useful for API)
+# 12. Pagination (Useful for API)
 
 Example:
 
@@ -370,7 +471,7 @@ const trips = await Trip.find()
 
 ---
 
-# 11. Why MongoDB for our Project
+# 13. Why MongoDB for our Project
 
 MongoDB is suitable for the Tourism SaaS platform because:
 
